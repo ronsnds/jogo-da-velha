@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import './App.css';
+import { calcularVencedor } from "./components/calcularVencedor.jsx";
 
-function Tabuleiro() {
+export default function Tabuleiro() {
   const [tabuleiro, setTabuleiro] = useState(Array(9).fill(null));
-  const [jogador, setJogador] = useState("X");
-  const [click, setClick] = useState(0)
+  const [player, setPlayer] = useState("X");
+  const [click, setClick] = useState(0);
 
   const vencedor = calcularVencedor(tabuleiro);
 
@@ -12,10 +13,11 @@ function Tabuleiro() {
     if (tabuleiro[i] || vencedor) {
       return;
     }
+
     const novoTabuleiro = tabuleiro.slice();
-    novoTabuleiro[i] = jogador;
+    novoTabuleiro[i] = player;
     setTabuleiro(novoTabuleiro);
-    setJogador(jogador === "X" ? "O" : "X");
+    setPlayer(player === "X" ? "O" : "X");
 
     setClick(click + 1);
     return;
@@ -28,7 +30,6 @@ function Tabuleiro() {
       </button>
     );
   }
-
 
   function restart() {
     setTabuleiro(Array(9).fill(null));
@@ -62,16 +63,16 @@ function Tabuleiro() {
       </div>
 
       <div className="status">
-        {click === 9 && vencedor == null ? 
+        {click === 9 && vencedor == null ?
           <>
-            Nenhum vencedor<br/>
+            Nenhum vencedor<br />
             Reinicie o jogo!
           </>
           : (
             <>
               {vencedor
-                ? (<> O vencedor é {vencedor} <br/> Reinicie o jogo! </>)
-                : (`É a vez de ${jogador}`)}
+                ? (<> O vencedor é {vencedor} <br /> Reinicie o jogo! </>)
+                : (<>É a vez de {player}</>)}
             </>
           )}
 
@@ -79,25 +80,3 @@ function Tabuleiro() {
     </>
   );
 }
-
-function calcularVencedor(tabuleiro) {
-  const linhas = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < linhas.length; i++) {
-    const [a, b, c] = linhas[i];
-    if (tabuleiro[a] && tabuleiro[a] === tabuleiro[b] && tabuleiro[a] === tabuleiro[c]) {
-      return tabuleiro[a];
-    }
-  }
-  return null;
-}
-
-export default Tabuleiro;
