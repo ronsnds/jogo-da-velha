@@ -55,10 +55,12 @@ header .restart:hover {
 }
 
 .status {
-  background-color: gray;
+  background-color: rgb(124, 159, 255);
   margin: 2rem 0 0;
   padding: 7px 20px;
   font-size: 1.5rem;
   border-radius: 5px;
   font-weight: 600;
+  text-align: center;
+  color: black;
 }

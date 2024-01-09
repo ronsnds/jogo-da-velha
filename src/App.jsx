@@ -4,6 +4,7 @@ import './App.css';
 function Tabuleiro() {
   const [tabuleiro, setTabuleiro] = useState(Array(9).fill(null));
   const [jogador, setJogador] = useState("X");
+  const [click, setClick] = useState(0)
 
   const vencedor = calcularVencedor(tabuleiro);
 
@@ -15,6 +16,9 @@ function Tabuleiro() {
     novoTabuleiro[i] = jogador;
     setTabuleiro(novoTabuleiro);
     setJogador(jogador === "X" ? "O" : "X");
+
+    setClick(click + 1);
+    return;
   }
 
   function renderizarBotao(i) {
@@ -25,11 +29,18 @@ function Tabuleiro() {
     );
   }
 
+
+  function restart() {
+    setTabuleiro(Array(9).fill(null));
+    setClick(0);
+    return;
+  }
+
   return (
     <>
       <header>
         <h1>Jogo da Velha</h1>
-        <button className="restart" onClick={() => setTabuleiro(Array(9).fill(null))}>Reiniciar</button>
+        <button className="restart" onClick={restart}>Reiniciar</button>
       </header>
 
       <div className="tabuleiro">
@@ -51,9 +62,19 @@ function Tabuleiro() {
       </div>
 
       <div className="status">
-        {vencedor
-          ? `O vencedor é ${vencedor}`
-          : `É a vez de ${jogador}`}
+        {click === 9 && vencedor == null ? 
+          <>
+            Nenhum vencedor<br/>
+            Reinicie o jogo!
+          </>
+          : (
+            <>
+              {vencedor
+                ? (<> O vencedor é {vencedor} <br/> Reinicie o jogo! </>)
+                : (`É a vez de ${jogador}`)}
+            </>
+          )}
+
       </div>
     </>
   );
